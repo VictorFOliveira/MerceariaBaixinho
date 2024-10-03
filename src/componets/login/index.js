@@ -1,15 +1,18 @@
 import React, { useState } from "react";
 import { Text, View, TextInput, Button, StyleSheet, TouchableOpacity, Alert } from "react-native";
-import { loginUser } from '../../services/authService'; // Ajuste o caminho para o correto
+import { loginUser } from '../../services/authService'; // Verifique o caminho
+import { useNavigation } from '@react-navigation/native';
 
 export default function Login() {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
+    const navigation = useNavigation();
 
     const handleLogin = async () => {
         try {
             const user = await loginUser(email, password);
             Alert.alert('Sucesso', `Bem-vindo, ${user.email}!`);
+            navigation.navigate('Admin');
         } catch (error) {
             Alert.alert('Erro', error.message);
         }
@@ -18,7 +21,7 @@ export default function Login() {
     return (
         <View style={styles.card}>
             <Text style={styles.label}>Usuário</Text>
-            <TextInput 
+            <TextInput
                 style={styles.input}
                 placeholder="Ex. joao@gmail.com"
                 keyboardType="email-address"
@@ -26,9 +29,8 @@ export default function Login() {
                 value={email}
                 onChangeText={setEmail}
             />
-
             <Text style={styles.label}>Senha</Text>
-            <TextInput 
+            <TextInput
                 style={styles.input}
                 placeholder="Digite sua senha"
                 secureTextEntry={true}
@@ -37,7 +39,6 @@ export default function Login() {
                 onChangeText={setPassword}
             />
             <Button title="Login" color="#841584" onPress={handleLogin} />
-            
             <TouchableOpacity onPress={() => alert('Recuperar Senha')}>
                 <Text style={styles.forgotPassword}>Esqueceu sua senha?</Text>
             </TouchableOpacity>
@@ -52,12 +53,6 @@ const styles = StyleSheet.create({
         padding: 30,
         margin: 50,
         elevation: 20,
-        shadowOffset: {
-            width: 10,
-            height: 2,
-        },
-        shadowOpacity: 0.25,
-        shadowRadius: 5.5,
     },
     label: {
         fontSize: 22,
