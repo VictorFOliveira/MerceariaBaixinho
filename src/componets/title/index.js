@@ -18,20 +18,20 @@ const styles = StyleSheet.create({
         padding: 10,
     },
     title: {
-        fontSize: 30, // Tamanho do título
-        fontWeight: 'bold', // Peso da fonte
-        color: '#2E8B57', // Verde vibrante
-        textAlign: 'center', // Centraliza o texto
+        fontSize: 30, 
+        fontWeight: 'bold', 
+        color: '#2E8B57', 
+        textAlign: 'center', 
     },
     subtitle: {
-        fontSize: 20, // Tamanho do subtítulo
-        color: '#3CB371', // Verde mais claro
+        fontSize: 20, 
+        color: '#3CB371', 
         textAlign: 'center',
-        marginVertical: 5, // Espaçamento vertical
+        marginVertical: 5, 
     },
     message: {
-        fontSize: 16, // Tamanho da mensagem
-        color: '#556B2F', // Verde escuro
+        fontSize: 16, 
+        color: '#556B2F', 
         textAlign: 'center',
         marginTop: 5,
     },

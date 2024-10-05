@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from 'react';
-import { StyleSheet, View, Text, FlatList, TouchableOpacity } from 'react-native';
-import { db } from '../config/firebaseConfig' //Ajuste o caminho conforme necessário
+import { StyleSheet, View, Text, FlatList } from 'react-native';
+import { db } from '../config/firebaseConfig'; // Ajuste o caminho conforme necessário
 import { collection, getDocs } from 'firebase/firestore';
+import { LinearGradient } from 'expo-linear-gradient';
 
 const StockScreen = () => {
   const [products, setProducts] = useState([]);
@@ -12,7 +13,7 @@ const StockScreen = () => {
         const querySnapshot = await getDocs(collection(db, 'products'));
         const productsList = querySnapshot.docs.map(doc => ({
           id: doc.id,
-          ...doc.data()
+          ...doc.data(),
         }));
         setProducts(productsList);
       } catch (error) {
@@ -24,7 +25,7 @@ const StockScreen = () => {
   }, []);
 
   return (
-    <View style={styles.container}>
+    <LinearGradient colors={['#FFFFFF', '#E2E2E2']} style={styles.container}>
       <Text style={styles.title}>Produtos em Estoque</Text>
       <FlatList
         data={products}
@@ -32,12 +33,12 @@ const StockScreen = () => {
         renderItem={({ item }) => (
           <View style={styles.productItem}>
             <Text style={styles.productName}>{item.name}</Text>
-            <Text style={styles.productPrice}>R${item.price.toFixed(2)}</Text>
+            <Text style={styles.productPrice}>R$ {item.price.toFixed(2)}</Text>
             <Text style={styles.productQuantity}>Quantidade: {item.quantity}</Text>
           </View>
         )}
       />
-    </View>
+    </LinearGradient>
   );
 };
 
@@ -45,30 +46,36 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     padding: 20,
-    backgroundColor: '#ffffff',
   },
   title: {
     fontSize: 28,
     fontWeight: 'bold',
     marginBottom: 20,
+    textAlign: 'center',
+    color: '#333',
   },
   productItem: {
-    backgroundColor: '#f0f0f0',
+    backgroundColor: '#ffffff',
     padding: 15,
-    borderRadius: 8,
-    marginBottom: 10,
-    elevation: 2, // Sombra
+    borderRadius: 10,
+    marginBottom: 15,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.3,
+    shadowRadius: 4,
+    elevation: 2,
   },
   productName: {
-    fontSize: 20,
+    fontSize: 22,
     fontWeight: 'bold',
+    color: '#4A90E2',
   },
   productPrice: {
-    fontSize: 16,
-    color: '#555',
+    fontSize: 18,
+    color: '#333',
   },
   productQuantity: {
-    fontSize: 16,
+    fontSize: 18,
     color: '#777',
   },
 });

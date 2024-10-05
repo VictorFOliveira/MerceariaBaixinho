@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { StyleSheet, View, Text, FlatList, TouchableOpacity, Button } from 'react-native';
-import { db } from '../config/firebaseConfig'; // Ajuste o caminho conforme necessário
+import { db } from '../config/firebaseConfig';
 import { collection, getDocs, addDoc, updateDoc, doc, getDoc } from 'firebase/firestore';
-import { LinearGradient } from 'expo-linear-gradient'; // Importando o LinearGradient
+import { LinearGradient } from 'expo-linear-gradient';
 
 const SaleScreen = () => {
   const [products, setProducts] = useState([]);
@@ -64,21 +64,18 @@ const SaleScreen = () => {
 
       await addDoc(collection(db, 'reports'), reportData);
       
-      // Atualizar estoque
       await Promise.all(selectedProducts.map(async (item) => {
         const productRef = doc(db, 'products', item.id);
-        const updatedQuantity = item.quantity; // Quantidade a ser subtraída
+        const updatedQuantity = item.quantity; 
         
-        // Busca a quantidade atual do produto
         const productSnapshot = await getDoc(productRef);
-        const currentQuantity = productSnapshot.data().quantity; // Supondo que há um campo 'quantity'
+        const currentQuantity = productSnapshot.data().quantity;
 
-        // Atualiza a quantidade no estoque
         await updateDoc(productRef, { quantity: currentQuantity - updatedQuantity });
       }));
 
       alert('Venda realizada com sucesso!');
-      setSelectedProducts([]); // Limpa a seleção após a venda
+      setSelectedProducts([]);
     } catch (error) {
       console.error("Erro ao registrar venda: ", error);
     }
@@ -111,20 +108,26 @@ const SaleScreen = () => {
     );
   };
 
-  const availableProducts = products.filter(product => product.quantity > 0); // Filtra produtos disponíveis
+  const availableProducts = products.filter(product => product.quantity > 0); 
 
   return (
     <View style={styles.container}>
-      <LinearGradient colors={['#4A90E2', '#9013FE']} style={styles.header}>
+      <LinearGradient colors={['#6C63FF', '#F4A261']} style={styles.header}>
         <Text style={styles.title}>Venda de Produtos</Text>
       </LinearGradient>
       <FlatList
-        data={availableProducts} // Exibe apenas produtos disponíveis
+        data={availableProducts} 
         renderItem={renderProductItem}
         keyExtractor={(item) => item.id}
       />
       <Text style={styles.totalText}>Total: R${total.toFixed(2)}</Text>
-      <Button title="Confirmar Venda" onPress={handleConfirmSale} disabled={selectedProducts.length === 0} color="#4A90E2" />
+      <TouchableOpacity 
+        style={[styles.button, { backgroundColor: total > 0 ? '#2E7D32' : '#BDBDBD' }]} 
+        onPress={handleConfirmSale} 
+        disabled={selectedProducts.length === 0}
+      >
+        <Text style={styles.buttonText}>Confirmar Venda</Text>
+      </TouchableOpacity>
     </View>
   );
 };
@@ -139,13 +142,18 @@ const styles = StyleSheet.create({
     paddingVertical: 20,
     borderRadius: 10,
     marginBottom: 20,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.3,
+    shadowRadius: 6,
+    elevation: 4,
   },
   title: {
     fontSize: 28,
     fontWeight: 'bold',
     textAlign: 'center',
     color: '#fff',
-    textShadowColor: 'rgba(0, 0, 0, 0.3)',
+    textShadowColor: 'rgba(0, 0, 0, 0.5)',
     textShadowOffset: { width: 1, height: 1 },
     textShadowRadius: 5,
   },
@@ -186,7 +194,19 @@ const styles = StyleSheet.create({
     fontSize: 18,
     fontWeight: 'bold',
     marginVertical: 15,
-    color: '#4A90E2',
+    color: '#6C63FF',
+    textAlign: 'right',
+  },
+  button: {
+    padding: 15,
+    borderRadius: 8,
+    alignItems: 'center',
+    marginTop: 20,
+  },
+  buttonText: {
+    color: '#ffffff',
+    fontSize: 16,
+    fontWeight: '600',
   },
 });
 

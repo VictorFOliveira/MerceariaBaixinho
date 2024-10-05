@@ -1,5 +1,5 @@
 import { signInWithEmailAndPassword } from "firebase/auth";
-import { auth } from '../componets/config/firebaseConfig'; // Verifique o caminho
+import { auth } from '../componets/config/firebaseConfig';
 
 
 const loginUser = async (email, password) => {
